@@ -19,18 +19,20 @@ colors:
   on-beige: "#000000"
   warning: "#d4a017"
 typography:
-  display-lg: { family: display, size: 48px, weight: 400, lineHeight: 1.15, letterSpacing: 3px, case: upper }
-  display-md: { family: display, size: 32px, weight: 400, lineHeight: 1.2, letterSpacing: 2px, case: upper }
-  chord-lg: { family: display, size: 56px, weight: 400, lineHeight: 1.0, letterSpacing: 3px, case: none }
-  chord-md: { family: display, size: 32px, weight: 400, lineHeight: 1.0, letterSpacing: 2px, case: none }
-  chord-sm: { family: display, size: 20px, weight: 400, lineHeight: 1.0, letterSpacing: 1px, case: none }
-  bpm: { family: display, size: 44px, weight: 400, lineHeight: 1.0, letterSpacing: 2px }
-  wordmark: { family: display, size: 14px, weight: 400, lineHeight: 1.0, letterSpacing: 6px, case: upper }
-  lead: { family: text, size: 17px, weight: 400, lineHeight: 1.5 }
-  body-md: { family: text, size: 16px, weight: 400, lineHeight: 1.5 }
-  button: { family: mono, size: 14px, weight: 400, lineHeight: 1.0, letterSpacing: 2.5px, case: upper }
-  nav-link: { family: mono, size: 12px, weight: 400, lineHeight: 1.4, letterSpacing: 2px, case: upper }
-  caption: { family: mono, size: 11px, weight: 400, lineHeight: 1.4, letterSpacing: 2px, case: upper }
+  fonts: { display: "Pretendard", text: "Gowun Batang (고운바탕)", mono: "IBM Plex Mono" }
+  display-lg: { family: display, size: 48px, weight: 400, lineHeight: 1.2, letterSpacing: -0.5px, case: upper }
+  display-md: { family: display, size: 32px, weight: 400, lineHeight: 1.2, letterSpacing: -0.3px, case: upper }
+  chord-lg: { family: display, size: 56px, weight: 400, lineHeight: 1.0, letterSpacing: -1px, case: none }
+  chord-md: { family: display, size: 32px, weight: 400, lineHeight: 1.0, letterSpacing: -0.5px, case: none }
+  chord-sm: { family: display, size: 20px, weight: 400, lineHeight: 1.0, letterSpacing: 0, case: none }
+  bpm: { family: display, size: 44px, weight: 400, lineHeight: 1.0, letterSpacing: -1px, numeric: tabular }
+  wordmark: { family: display, size: 14px, weight: 400, lineHeight: 1.0, letterSpacing: 4px, case: upper }
+  lead: { family: text, size: 17px, weight: 400, lineHeight: 1.75 }
+  body-md: { family: text, size: 16px, weight: 400, lineHeight: 1.7 }
+  button: { family: display, size: 14px, weight: 400, lineHeight: 1.0, letterSpacing: 1.5px, case: upper }
+  nav-link: { family: display, size: 12px, weight: 400, lineHeight: 1.4, letterSpacing: 1px, case: upper }
+  caption: { family: display, size: 12px, weight: 400, lineHeight: 1.4, letterSpacing: 0.6px, case: upper }
+  code: { family: mono, size: 13-16px, weight: 400, letterSpacing: 0 }
 spacing:
   xxs: 4px
   xs: 8px
@@ -61,7 +63,7 @@ SlowStrum은 기타 입문자(교회 찬양팀 고등학생)가 **코드 전환�
 **Key Characteristics**
 - 배경은 `{colors.canvas}` (#000000) 하나. 라이트 모드는 없다.
 - 포인트 색은 `{colors.beige}` (#d8c8a8) 하나. 오류 표시용 `{colors.warning}`은 의미 색이라 포인트 색으로 치지 않는다.
-- 서체 3종 분리: **Display**(제목·코드명·숫자), **Text**(본문, 세리프), **Mono**(버튼·라벨·캡션).
+- 서체 3종 분리: **Pretendard**(제목·코드명·숫자·버튼·라벨), **고운바탕**(본문 명조), **IBM Plex Mono**(코드 진행처럼 정렬이 필요한 문자열).
 - 버튼만 알약 모양(`{rounded.pill}`), 나머지 카드·입력·그리드는 모두 각진 모서리(`{rounded.none}`).
 - 그림자, 그라데이션, 반투명 유리 효과를 쓰지 않는다. 깊이는 `{colors.surface-card}` 한 단계로만 표현한다.
 
@@ -106,35 +108,42 @@ SlowStrum은 기타 입문자(교회 찬양팀 고등학생)가 **코드 전환�
 
 ## 3. Typography
 
-### 3-1. 서체 3종
-| 역할 | 서체 | 대체 서체(한글 포함) | 쓰는 곳 |
-|---|---|---|---|
-| **Display** | Saira Condensed 400 | Noto Sans KR → 시스템 산세리프 | 페이지 제목, 코드명, BPM 숫자, 워드마크, 카운트인 |
-| **Text** | Cormorant Garamond 400 | Noto Serif KR → Garamond → serif | 본문, 페이지 설명, 입력값, 요약 표 값 |
-| **Mono** | JetBrains Mono 400 | Noto Sans KR → ui-monospace | 버튼, 단계 표시, 캡션, 칩, 코드 진행 입력, 박자 번호 |
+### 3-1. 서체 3종 — 한글 기준
+처음에는 영문 서체(콘덴스드 산세리프 + 영문 세리프 + 고정폭)를 썼지만, 한글이 대체 서체로 섞이면서 영문과 한글의 굵기·높이가 맞지 않았다. 넓은 자간의 고정폭 대문자 라벨도 한글에서는 글자가 흩어져 보였다. 그래서 **한글을 먼저 기준으로** 서체를 다시 골랐다.
 
-서체 역할은 섞지 않는다. 버튼에 Text 서체를 쓰거나, 문단에 Mono 서체를 쓰지 않는다.
+| 역할 | 서체 | 고른 이유 | 쓰는 곳 |
+|---|---|---|---|
+| **Display / UI** | Pretendard 400 | 한글·영문·숫자의 높이와 굵기가 함께 설계된 한글 산세리프. 작은 라벨부터 큰 숫자까지 한 서체로 일관되게 보인다 | 페이지 제목, 코드명, BPM 숫자, 버튼, 단계 표시, 라벨 |
+| **Text** | 고운바탕 (Gowun Batang) 400 | 획이 부드러운 한글 명조. 설명문에 읽는 리듬을 주고, UI 글자(Pretendard)와 역할이 구분된다 | 페이지 설명, 본문, 입력값 일부, 요약 표 값 |
+| **Mono** | IBM Plex Mono 400 | 글자 폭이 같아 `G:4 D/F#:4`처럼 기호가 섞인 문자열이 흐트러지지 않는다 | 코드 진행 입력, 프리셋 진행, 칩, 박자 번호, 공유 링크 |
+
+- 세 서체 모두 npm 패키지(`pretendard`, `@fontsource/gowun-batang`, `@fontsource/ibm-plex-mono`)로 **사이트 안에 직접 포함**한다. 외부 글꼴 서버가 막힌 환경(학교 와이파이 등)에서도 똑같이 보인다.
+- 대체 순서: Pretendard → Apple SD Gothic Neo → 맑은 고딕 / 고운바탕 → Noto Serif KR → AppleMyungjo.
+- Mono는 **정렬이 필요한 문자열에만** 쓴다. 라벨이나 버튼에 고정폭 서체를 쓰지 않는다.
 
 ### 3-2. 위계
-| 토큰 | 크기 | 행간 | 자간 | 대소문자 | 쓰는 곳 |
-|---|---|---|---|---|---|
-| `{typography.display-lg}` | 48px | 1.15 | 3px | 대문자 | 입력 페이지 제목 (WHAT ARE WE PLAYING?) |
-| `{typography.display-md}` | 32px | 1.2 | 2px | 대문자 | 연습 페이지 곡 제목 |
-| `{typography.chord-lg}` | 56px | 1.0 | 3px | **변환 없음** | NOW 코드명 |
-| `{typography.chord-md}` | 32px | 1.0 | 2px | 변환 없음 | NEXT 코드명 |
-| `{typography.chord-sm}` | 20px | 1.0 | 1px | 변환 없음 | 다이어그램 미리보기 코드명 |
-| `{typography.bpm}` | 44px | 1.0 | 2px | — | 하단 바 BPM 숫자 |
-| `{typography.wordmark}` | 14px | 1.0 | 6px | 대문자 | 상단 워드마크 SLOWSTRUM |
-| `{typography.lead}` | 17px | 1.5 | 0 | 문장형 | 페이지 설명 |
-| `{typography.body-md}` | 16px | 1.5 | 0 | 문장형 | 본문 |
-| `{typography.button}` | 14px | 1.0 | 2.5px | 대문자 | 모든 버튼 |
-| `{typography.nav-link}` | 12px | 1.4 | 2px | 대문자 | 상단 단계 표시 |
-| `{typography.caption}` | 11px | 1.4 | 2px | 대문자 | 라벨, 메타 정보, 진행 번호 |
+| 토큰 | 서체 | 크기 | 행간 | 자간 | 대소문자 | 쓰는 곳 |
+|---|---|---|---|---|---|---|
+| `{typography.display-lg}` | Pretendard | 48px | 1.2 | -0.5px | 대문자 | 입력 페이지 제목 (WHAT ARE WE PLAYING?) |
+| `{typography.display-md}` | Pretendard | 32px | 1.2 | -0.3px | 대문자 | 연습 페이지 곡 제목 |
+| `{typography.chord-lg}` | Pretendard | 56px | 1.0 | -1px | **변환 없음** | NOW 코드명 |
+| `{typography.chord-md}` | Pretendard | 32px | 1.0 | -0.5px | 변환 없음 | NEXT 코드명 |
+| `{typography.chord-sm}` | Pretendard | 20px | 1.0 | 0 | 변환 없음 | 다이어그램 미리보기 코드명 |
+| `{typography.bpm}` | Pretendard | 44px | 1.0 | -1px | — | 하단 바 BPM 숫자 (숫자 폭 고정) |
+| `{typography.wordmark}` | Pretendard | 14px | 1.0 | 4px | 대문자 | 상단 워드마크 SLOWSTRUM |
+| `{typography.lead}` | 고운바탕 | 17px | 1.75 | 0 | 문장형 | 페이지 설명 |
+| `{typography.body-md}` | 고운바탕 | 16px | 1.7 | 0 | 문장형 | 본문 |
+| `{typography.button}` | Pretendard | 14px | 1.0 | 1.5px | 대문자 | 모든 버튼 |
+| `{typography.nav-link}` | Pretendard | 12px | 1.4 | 1px | 대문자 | 상단 단계 표시 |
+| `{typography.caption}` | Pretendard | 12px | 1.4 | 0.6px | 대문자 | 라벨, 메타 정보, 진행 번호 |
+| `{typography.code}` | IBM Plex Mono | 13~16px | — | 0 | 변환 없음 | 코드 진행, 칩, 박자 번호, 링크 |
 
 ### 3-3. 원칙
 - **굵은 글씨는 없다.** 모든 글자는 weight 400. 강조는 ① 크기 ② 자간 ③ 대문자 ④ 서체 대비로 만든다.
+- **자간은 한글 기준으로 잡는다.** 큰 제목과 숫자는 음수 자간(-0.3 ~ -1px)으로 단단하게 모으고, 작은 라벨은 0.6~1.5px만 벌린다. 2px 이상 벌리면 한글이 낱자로 흩어져 보인다. 예외는 워드마크(4px) 하나다.
+- **한글 줄바꿈은 단어 단위**(`word-break: keep-all`)로 하고, 본문 행간은 1.7 이상으로 둔다.
 - **코드명은 절대 대문자로 바꾸지 않는다.** `Am`을 `AM`으로, `F#m`을 `F#M`으로 바꾸면 다른 코드가 된다. 코드명에는 `text-transform: none`을 고정한다.
-- 한글은 대문자 변환의 영향을 받지 않으므로, 영문 제목 + 한글 설명 조합을 기본으로 한다.
+- 숫자가 바뀌는 곳(BPM)은 `font-variant-numeric: tabular-nums`로 숫자 폭을 고정해서, 값이 바뀌어도 글자가 흔들리지 않게 한다.
 
 ---
 
@@ -244,11 +253,11 @@ SlowStrum은 기타 입문자(교회 찬양팀 고등학생)가 **코드 전환�
 **`text-input`** — 배경 투명, 테두리 없이 **아래 1px 밑줄만** `{colors.hairline-strong}`. 높이 44px 이상. 포커스: 밑줄 `{colors.beige}`. placeholder `{colors.muted-soft}`.
 | 변형 | 서체 | 크기 | 쓰는 곳 |
 |---|---|---|---|
-| 기본 | Text | 17px | — |
-| big | Display | 32px | 곡 제목 |
-| mono | Mono | 16px, 자간 1px | 코드 진행 |
-| bpm | Display | 48px | 원곡 BPM |
-| link | Mono | 12px | 공유 링크(읽기 전용) |
+| 기본 | 고운바탕 | 17px | — |
+| big | Pretendard | 30px, 자간 -0.5px | 곡 제목 |
+| mono | IBM Plex Mono | 16px, 자간 0 | 코드 진행 |
+| bpm | Pretendard | 48px, 숫자 폭 고정 | 원곡 BPM |
+| link | IBM Plex Mono | 12px | 공유 링크(읽기 전용) |
 
 ### 7-4. 카드와 정보 블록
 **`preset-card`** — 배경 `{colors.surface-card}`, 안쪽 16px, 최소 높이 88px, 2열 그리드. 위에 키 이름(caption), 아래에 진행(Mono 13px). 선택: 테두리 `{colors.beige}` + 배경 `{colors.beige-soft}` + 이름 베이지.
@@ -279,7 +288,7 @@ SlowStrum은 기타 입문자(교회 찬양팀 고등학생)가 **코드 전환�
 |---|---|
 | 마디 세로선 | 2px `{colors.muted-soft}` |
 | 박자 칸 | 높이 64px(모바일 48px), 1px `{colors.hairline}` 테두리, 박자 번호 Mono 13px |
-| 코드 바뀌는 칸 | 칸 위에 코드명(Display 18px) |
+| 코드 바뀌는 칸 | 칸 위에 코드명(Pretendard 18px) |
 | 1박자 | 칸 위 오른쪽에 5px 흰 점 |
 | **지금 박자** | 칸 전체 `{colors.beige}` 채움, 번호 `{colors.on-beige}` |
 | 마디 번호 | 마디 아래 01·02… Mono 10px. 지금 마디는 베이지 |
@@ -292,7 +301,7 @@ SlowStrum은 기타 입문자(교회 찬양팀 고등학생)가 **코드 전환�
 
 **`slider`** — 트랙 1px `{colors.hairline-strong}`, 손잡이 20px 원 `{colors.beige}`. 25~100%, 5% 단위.
 
-**`count-in`** — 화면 전체 검정 82% 덮개 + 가운데 숫자(Display 220px, 모바일 160px, `{colors.beige}`). 4 → 3 → 2 → 1.
+**`count-in`** — 화면 전체 검정 82% 덮개 + 가운데 숫자(Pretendard 220px, 모바일 160px, `{colors.beige}`, 이 숫자만 굵기 300으로 가늘게 — 크게 띄워도 화면을 누르지 않게). 4 → 3 → 2 → 1.
 
 ### 7-6. 하단 고정 바 (입력·공유 페이지)
 **`wizard-bar`** — 화면 아래 고정, 위 헤어라인. 왼쪽 `← 이전 단계`(기본 버튼), 가운데 `다음 — 코드 진행` 안내(caption), 오른쪽 `다음 단계 →`(primary). 입력 오류가 있으면 다음 버튼이 비활성되고, 안내가 `표시된 입력을 먼저 고쳐 주세요`로 바뀐다.
@@ -303,7 +312,7 @@ SlowStrum은 기타 입문자(교회 찬양팀 고등학생)가 **코드 전환�
 | `notice` | 배경 `{colors.surface-card}`, 왼쪽 2px 베이지 선 | 링크 정보를 읽을 수 없어요. 선생님께 링크를 다시 받아 주세요. |
 | `error` | `{colors.warning}`, 15px | BPM은 40에서 200 사이로 입력해 주세요. |
 | `success` | `{colors.beige}`, 15px | 링크를 복사했어요. 카카오톡에 붙여넣어 보내세요. |
-| `hint` | Mono 11px, `{colors.muted-soft}` | 19/30 |
+| `hint` | IBM Plex Mono 11px, `{colors.muted-soft}` | 19/30 |
 
 ---
 
@@ -355,6 +364,6 @@ SlowStrum은 기타 입문자(교회 찬양팀 고등학생)가 **코드 전환�
 ## 10. 구현 메모
 
 - 토큰은 `src/styles.css`의 `:root` CSS 변수로 정의되어 있다. 새 색을 hex로 직접 쓰지 않고 변수를 쓴다.
-- 서체는 Google Fonts에서 Saira Condensed, Cormorant Garamond, JetBrains Mono, Noto Sans KR, Noto Serif KR을 weight 400만 불러온다.
+- 서체는 npm 패키지로 설치해 `src/main.jsx`에서 불러온다 (Pretendard 가변 글꼴 동적 서브셋, 고운바탕 400, IBM Plex Mono 400). 외부 글꼴 서버에 의존하지 않는다.
 - 상태는 기본(Default)과 눌림(Active) 두 가지만 정의한다. hover 상태는 따로 디자인하지 않는다 (주 사용 기기가 터치 화면).
 - 새 컴포넌트는 기본 모서리 0px으로 시작하고, 누르는 버튼일 때만 `{rounded.pill}`을 쓴다.

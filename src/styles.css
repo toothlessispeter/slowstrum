@@ -23,10 +23,14 @@
   --beige-soft: rgba(216, 200, 168, 0.14);
   --on-beige: #000000;
 
-  /* type — Display / Text(serif) / Monospace 3분할 */
-  --font-display: 'Saira Condensed', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-text: 'Cormorant Garamond', 'Noto Serif KR', Garamond, 'Times New Roman', serif;
-  --font-mono: 'JetBrains Mono', 'Noto Sans KR', ui-monospace, 'SF Mono', 'Cascadia Mono', monospace;
+  /* type — 한글 기준 3분할
+     Display/UI: Pretendard (제목·코드명·숫자·버튼·라벨)
+     Text:       고운바탕 (본문·설명)
+     Mono:       IBM Plex Mono (코드 진행·칩·박자 번호·링크 — 정렬이 필요한 문자열만) */
+  --font-display: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --font-ui: var(--font-display);
+  --font-text: 'Gowun Batang', 'Noto Serif KR', 'AppleMyungjo', serif;
+  --font-mono: 'IBM Plex Mono', 'Pretendard Variable', ui-monospace, 'SF Mono', monospace;
 
   /* spacing (4px base) */
   --xxs: 4px;
@@ -61,8 +65,9 @@ body {
   color: var(--body);
   font-family: var(--font-text);
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 1.7;
   font-weight: 400;
+  word-break: keep-all;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -87,8 +92,8 @@ ul { list-style: none; }
 .display-lg {
   font-family: var(--font-display);
   font-size: 48px;
-  line-height: 1.15;
-  letter-spacing: 3px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
   text-transform: uppercase;
   color: var(--on-dark);
 }
@@ -96,15 +101,15 @@ ul { list-style: none; }
   font-family: var(--font-display);
   font-size: 32px;
   line-height: 1.2;
-  letter-spacing: 2px;
+  letter-spacing: -0.3px;
   text-transform: uppercase;
   color: var(--on-dark);
 }
 .caption {
-  font-family: var(--font-mono);
-  font-size: 11px;
+  font-family: var(--font-ui);
+  font-size: 12px;
   line-height: 1.4;
-  letter-spacing: 2px;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -112,7 +117,7 @@ ul { list-style: none; }
   font-family: var(--font-display);
   font-size: 14px;
   line-height: 1;
-  letter-spacing: 6px;
+  letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--on-dark);
 }
@@ -120,19 +125,20 @@ ul { list-style: none; }
 .chord-name {
   font-family: var(--font-display);
   color: var(--on-dark);
-  letter-spacing: 2px;
+  letter-spacing: -0.5px;
   line-height: 1;
   text-transform: none;
 }
-.chord-name.lg { font-size: 56px; letter-spacing: 3px; }
+.chord-name.lg { font-size: 56px; letter-spacing: -1px; }
 .chord-name.md { font-size: 32px; }
-.chord-name.sm { font-size: 20px; letter-spacing: 1px; }
+.chord-name.sm { font-size: 20px; letter-spacing: 0; }
 
 .lead {
   max-width: 600px;
   margin-top: var(--md);
   color: var(--body-strong);
   font-size: 17px;
+  line-height: 1.75;
 }
 
 /* ---------- layout ---------- */
@@ -163,9 +169,9 @@ ul { list-style: none; }
   align-items: center;
   gap: var(--xs);
   min-height: 44px;
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 12px;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -177,9 +183,9 @@ ul { list-style: none; }
 .step-link:disabled .step-no { color: var(--hairline-strong); }
 .step-mobile {
   display: none;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 2px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--beige);
 }
@@ -204,16 +210,16 @@ ul { list-style: none; }
   border-radius: 9999px;
   background: transparent;
   color: var(--on-dark);
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 14px;
   line-height: 1;
-  letter-spacing: 2.5px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   white-space: nowrap;
 }
 .btn:active { background: var(--surface-elevated); }
 .btn:disabled { border-color: var(--hairline-strong); color: var(--muted-soft); background: transparent; }
-.btn.sm { padding: 0 16px; font-size: 12px; letter-spacing: 2px; }
+.btn.sm { padding: 0 16px; font-size: 13px; letter-spacing: 0.5px; }
 /* 다음 행동 = 베이지 */
 .btn.primary { background: var(--beige); border-color: var(--beige); color: var(--on-beige); }
 .btn.primary:active { background: var(--on-dark); border-color: var(--on-dark); }
@@ -234,7 +240,7 @@ ul { list-style: none; }
   margin-top: var(--xs);
   font-family: var(--font-mono);
   font-size: 11px;
-  letter-spacing: 2px;
+  letter-spacing: 0.5px;
   color: var(--muted-soft);
 }
 
@@ -268,11 +274,11 @@ ul { list-style: none; }
 .input::placeholder { color: var(--muted-soft); }
 .input:focus { border-bottom-color: var(--beige); }
 .input:focus-visible { outline: none; }
-.input.big { font-family: var(--font-display); font-size: 32px; letter-spacing: 1px; }
+.input.big { font-family: var(--font-display); font-size: 30px; letter-spacing: -0.5px; }
 .mono-input {
   font-family: var(--font-mono);
   font-size: 16px;
-  letter-spacing: 1px;
+  letter-spacing: 0;
   line-height: 1.6;
   resize: vertical;
 }
@@ -304,7 +310,7 @@ ul { list-style: none; }
 }
 .preset.selected { border-color: var(--beige); background: var(--beige-soft); }
 .preset.selected .caption { color: var(--beige); }
-.preset-prog { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.5px; color: var(--body); }
+.preset-prog { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0; color: var(--body); }
 
 .chips { display: flex; flex-wrap: wrap; gap: var(--xs); margin-top: var(--md); }
 .chip {
@@ -312,7 +318,7 @@ ul { list-style: none; }
   border: 1px solid var(--hairline-strong);
   font-family: var(--font-mono);
   font-size: 12px;
-  letter-spacing: 1px;
+  letter-spacing: 0;
   color: var(--body);
 }
 .chip.err { border-color: var(--warning); color: var(--warning); }
@@ -346,12 +352,12 @@ ul { list-style: none; }
   padding: var(--xs) 0;
   border-top: 1px solid var(--hairline);
 }
-.mono-list { font-family: var(--font-mono); font-size: 13px; color: var(--body); letter-spacing: 1px; }
+.mono-list { font-family: var(--font-mono); font-size: 13px; color: var(--body); letter-spacing: 0; }
 
 .tempo-panel { display: flex; flex-wrap: wrap; gap: var(--xxl); }
 .bpm-field { display: flex; align-items: baseline; gap: var(--sm); }
-.bpm-input { width: 140px; font-family: var(--font-display); font-size: 48px; letter-spacing: 2px; }
-.unit { font-family: var(--font-mono); font-size: 12px; letter-spacing: 2px; color: var(--muted); }
+.bpm-input { width: 140px; font-family: var(--font-display); font-size: 48px; letter-spacing: -1px; font-variant-numeric: tabular-nums; }
+.unit { font-family: var(--font-ui); font-size: 12px; letter-spacing: 1px; color: var(--muted); }
 
 .toggles { display: flex; gap: var(--xs); }
 .toggle {
@@ -359,9 +365,9 @@ ul { list-style: none; }
   padding: 0 24px;
   border: 1px solid var(--hairline-strong);
   border-radius: 9999px;
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 14px;
-  letter-spacing: 2.5px;
+  letter-spacing: 1px;
   color: var(--muted);
 }
 .toggle.on { border-color: var(--beige); color: var(--beige); }
@@ -401,9 +407,9 @@ ul { list-style: none; }
 }
 .wbar-hint {
   text-align: center;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 2px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -467,7 +473,7 @@ ul { list-style: none; }
   left: 6px;
   font-family: var(--font-mono);
   font-size: 10px;
-  letter-spacing: 1px;
+  letter-spacing: 0;
   color: var(--muted-soft);
 }
 .measure.is-current .measure-no { color: var(--beige); }
@@ -483,7 +489,7 @@ ul { list-style: none; }
 .cell-chord {
   font-family: var(--font-display);
   font-size: 18px;
-  letter-spacing: 1px;
+  letter-spacing: -0.3px;
   color: var(--on-dark);
   white-space: nowrap;
 }
@@ -514,8 +520,8 @@ ul { list-style: none; }
   gap: var(--xl);
 }
 .readout { display: flex; flex-direction: column; gap: var(--xxs); min-width: 140px; }
-.bpm-big { font-family: var(--font-display); font-size: 44px; line-height: 1; letter-spacing: 2px; color: var(--on-dark); }
-.bpm-big small { font-size: 16px; letter-spacing: 2px; color: var(--muted); }
+.bpm-big { font-family: var(--font-display); font-size: 44px; line-height: 1; letter-spacing: -1px; color: var(--on-dark); font-variant-numeric: tabular-nums; }
+.bpm-big small { font-size: 15px; letter-spacing: 0.5px; color: var(--muted); }
 .speed { display: flex; align-items: center; gap: var(--md); }
 .actions { display: flex; gap: var(--xs); }
 
@@ -546,7 +552,7 @@ ul { list-style: none; }
   background: rgba(0, 0, 0, 0.82);
   pointer-events: none;
 }
-.countin span { font-family: var(--font-display); font-size: 220px; line-height: 1; color: var(--beige); }
+.countin span { font-family: var(--font-display); font-weight: 300; font-size: 220px; line-height: 1; color: var(--beige); }
 
 /* ============================================================
    responsive
@@ -559,15 +565,16 @@ ul { list-style: none; }
 @media (max-width: 767px) {
   :root { --gutter: 16px; --bar-h: 214px; }
 
-  .display-lg { font-size: 30px; letter-spacing: 2px; }
-  .display-md { font-size: 24px; letter-spacing: 1.5px; }
+  .display-lg { font-size: 30px; letter-spacing: -0.5px; }
+  .display-md { font-size: 24px; letter-spacing: -0.3px; }
   .lead { font-size: 16px; }
-  .wordmark { letter-spacing: 4px; }
+  .wordmark { letter-spacing: 3px; }
 
   .step-page { padding-top: var(--xl); }
   .step-head { padding-bottom: var(--lg); }
   .panel, .summary { padding: var(--lg) 0; }
   .input.big { font-size: 24px; }
+  .btn { letter-spacing: 1px; }
   .preset { min-height: 80px; padding: var(--sm); }
   .tempo-panel { gap: var(--lg); }
   .toggle { padding: 0 18px; }
@@ -587,7 +594,7 @@ ul { list-style: none; }
   .next-card .diagram.sm { max-width: 80px; }
 
   .cell-label { height: 24px; padding: 0 3px; }
-  .cell-chord { font-size: 14px; letter-spacing: 0.5px; }
+  .cell-chord { font-size: 14px; letter-spacing: -0.3px; }
   .cell.change .downbeat { display: none; }
   .cell-box { height: 48px; font-size: 11px; }
 
