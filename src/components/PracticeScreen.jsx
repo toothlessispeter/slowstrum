@@ -41,7 +41,7 @@ export default function PracticeScreen({ cfg, validation, onSpeed, onShare }) {
     const onVisibility = () => {
       if (document.hidden && playingRef.current) {
         stop();
-        setNotice('다른 화면으로 이동해서 정지했어요. 다시 시작을 눌러 주세요.');
+        setNotice('다른 화면으로 나가서 멈췄어요. 시작하기를 누르면 처음부터 다시 시작해요.');
       }
     };
     document.addEventListener('visibilitychange', onVisibility);
@@ -77,10 +77,10 @@ export default function PracticeScreen({ cfg, validation, onSpeed, onShare }) {
     <>
       <main className="page practice">
         <header className="practice-head">
-          <p className="caption">04 / 05 — 연습</p>
+          <p className="caption">4/5단계 · 연습</p>
           <h1 className="display-md">{cfg.title.trim() || '제목 없음'}</h1>
           <p className="caption meta">
-            원곡 {bpm} BPM · {cfg.ts} · 코드 {items.length}개 · {measures}마디
+            원곡 {bpm} BPM · {cfg.ts}박자 · 코드 {items.length}개 · {measures}마디
           </p>
         </header>
 
@@ -93,12 +93,12 @@ export default function PracticeScreen({ cfg, validation, onSpeed, onShare }) {
         <div className="practice-body">
           <aside className="chord-panel" aria-live="polite">
             <div className="now-card">
-              <p className="caption">Now</p>
+              <p className="caption">지금 칠 코드</p>
               <p className="chord-name lg">{now}</p>
               <ChordDiagram name={now} className="lg" />
             </div>
             <div className={`next-card ${aboutToChange ? 'blink' : ''}`}>
-              <p className="caption">Next</p>
+              <p className="caption">다음 코드</p>
               <p className="chord-name md">{next}</p>
               <ChordDiagram name={next} className="sm" />
             </div>
@@ -118,7 +118,7 @@ export default function PracticeScreen({ cfg, validation, onSpeed, onShare }) {
               <small> BPM</small>
             </span>
             <span className="caption">
-              원곡 {bpm}의 {speed}%
+              원곡의 {speed}% 빠르기
             </span>
           </div>
 
@@ -139,7 +139,7 @@ export default function PracticeScreen({ cfg, validation, onSpeed, onShare }) {
               step={SPEED_STEP}
               value={speed}
               onChange={(e) => setSpeed(Number(e.target.value))}
-              aria-label="연습 속도"
+              aria-label="연습 빠르기"
             />
             <button
               type="button"
@@ -157,17 +157,17 @@ export default function PracticeScreen({ cfg, validation, onSpeed, onShare }) {
               className={`btn ${playing ? '' : 'primary'}`}
               onClick={toggle}
             >
-              {playing ? '■ Stop' : '▶ Start'}
+              {playing ? '멈추기' : '시작하기'}
             </button>
             <button type="button" className="btn" onClick={onShare}>
-              Share →
+              공유하기
             </button>
           </div>
         </div>
 
         <div className="bar-notes">
-          {eff.floored && <p>가장 느린 속도({FLOOR_BPM} BPM)예요.</p>}
-          {playing && <p className="muted">소리가 안 들리면 무음 모드와 볼륨을 확인해 주세요.</p>}
+          {eff.floored && <p>가장 느린 빠르기({FLOOR_BPM} BPM)예요.</p>}
+          {playing && <p className="muted">소리가 안 들리면 무음 모드를 끄고 볼륨을 올려 주세요.</p>}
         </div>
       </div>
 

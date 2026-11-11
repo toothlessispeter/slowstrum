@@ -1,10 +1,10 @@
 // 와이어프레임 흐름: 페이지 5개
 export const STEPS = [
-  { key: 'song', label: 'Song', ko: '곡 정보' },
-  { key: 'chords', label: 'Chords', ko: '코드 진행' },
-  { key: 'tempo', label: 'Tempo', ko: '템포' },
-  { key: 'practice', label: 'Practice', ko: '연습' },
-  { key: 'share', label: 'Share', ko: '공유' },
+  { key: 'song', ko: '곡' },
+  { key: 'chords', ko: '코드' },
+  { key: 'tempo', ko: '빠르기' },
+  { key: 'practice', ko: '연습' },
+  { key: 'share', ko: '공유' },
 ];
 
 export const PRACTICE_STEP = 3;

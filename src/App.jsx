@@ -72,7 +72,7 @@ export default function App() {
 
       {step === 0 && <SongStep {...stepProps} linkError={linkError} />}
       {step === 1 && <ChordsStep {...stepProps} />}
-      {step === 2 && <TempoStep {...stepProps} />}
+      {step === 2 && <TempoStep {...stepProps} onEdit={goTo} />}
       {step === PRACTICE_STEP && (
         <PracticeScreen
           cfg={cfg}
@@ -86,21 +86,19 @@ export default function App() {
       {step < PRACTICE_STEP && (
         <WizardBar
           onBack={step > 0 ? () => goTo(step - 1) : null}
-          backLabel={step > 0 ? STEPS[step - 1].label : 'Back'}
-          nextLabel={step === 2 ? 'Start practice' : STEPS[step + 1].label}
+          nextLabel={step === 2 ? '연습 시작하기' : '다음'}
           onNext={() => goTo(step + 1)}
           nextDisabled={!ok[step]}
-          hint={ok[step] ? `다음 — ${STEPS[step + 1].ko}` : '표시된 입력을 먼저 고쳐 주세요'}
+          hint={ok[step] ? `${step + 1}/${STEPS.length}단계` : '빨간 글씨로 표시된 부분을 고쳐 주세요'}
         />
       )}
       {step === SHARE_STEP && (
         <WizardBar
           onBack={() => goTo(PRACTICE_STEP)}
-          backLabel="Practice"
-          nextLabel="New song"
+          nextLabel="새 곡 만들기"
           onNext={restart}
           primary={false}
-          hint="새 곡을 만들면 01 페이지로 돌아가요"
+          hint="새 곡을 만들면 1단계로 돌아가요"
         />
       )}
     </>

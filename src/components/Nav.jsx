@@ -1,6 +1,6 @@
-import { STEPS, pad } from '../steps.js';
+import { STEPS } from '../steps.js';
 
-// 상단: 워드마크 + 5단계 진행 표시. 앞 단계가 통과해야 뒤 단계를 누를 수 있다.
+// 상단: 워드마크 + 5단계 표시 + 진행 바. 앞 단계를 다 채워야 뒤 단계를 누를 수 있다.
 export default function Nav({ step, reachable, onGo }) {
   return (
     <header className="topbar">
@@ -17,15 +17,15 @@ export default function Nav({ step, reachable, onGo }) {
                 onClick={() => onGo(i)}
                 aria-current={i === step ? 'step' : undefined}
               >
-                <span className="step-no">{pad(i + 1)}</span>
-                {s.label}
+                <span className="step-no">{i + 1}</span>
+                {s.ko}
               </button>
             </li>
           ))}
         </ol>
 
         <span className="step-mobile">
-          {pad(step + 1)} / {pad(STEPS.length)} · {STEPS[step].label}
+          {step + 1}/{STEPS.length}단계 · {STEPS[step].ko}
         </span>
       </nav>
       <div className="progress" aria-hidden="true">

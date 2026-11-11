@@ -52,8 +52,8 @@ export const CHORD_GROUPS = [
 ];
 
 export const PRESETS = [
-  { name: 'G 키 기본', progression: 'G:4 D:4 Em:4 C:4' },
-  { name: 'D 키 기본', progression: 'D:4 A:4 Bm:4 G:4' },
-  { name: 'A 키 기본', progression: 'A:4 E:4 F#m:4 D:4' },
-  { name: 'G 키 베이스 하행', progression: 'G:4 D/F#:4 Em:4 C:4' },
+  { name: 'G키 기본 진행', progression: 'G:4 D:4 Em:4 C:4' },
+  { name: 'D키 기본 진행', progression: 'D:4 A:4 Bm:4 G:4' },
+  { name: 'A키 기본 진행', progression: 'A:4 E:4 F#m:4 D:4' },
+  { name: 'G키 베이스가 내려가는 진행', progression: 'G:4 D/F#:4 Em:4 C:4' },
 ];

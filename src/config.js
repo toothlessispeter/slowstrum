@@ -32,29 +32,29 @@ export function parseProgression(text) {
   const errors = [];
 
   if (!tokens.length) {
-    return { items, errors: ['연습할 코드 진행을 하나 이상 입력해 주세요.'] };
+    return { items, errors: ['연습할 코드를 하나 이상 입력해 주세요.'] };
   }
   if (tokens.length > MAX_CHORDS) {
-    errors.push(`코드는 ${MAX_CHORDS}개까지 입력할 수 있어요.`);
+    errors.push(`코드는 ${MAX_CHORDS}개까지 넣을 수 있어요.`);
   }
 
   for (const raw of tokens) {
     const m = raw.match(/^([^:]+):(\d+)$/);
     if (!m) {
       items.push({ raw, chord: raw, beats: 0, error: 'format' });
-      errors.push(`"${raw}"처럼 쓰지 말고 "${suggestFormat(raw)}"처럼 코드와 박자 수 사이에 콜론(:)을 넣어 주세요.`);
+      errors.push(`"${raw}"는 "${suggestFormat(raw)}"처럼 코드와 박자 수 사이에 :를 넣어서 써 주세요.`);
       continue;
     }
     const chord = m[1];
     const beats = Number(m[2]);
     if (!CHORDS[chord]) {
       items.push({ raw, chord, beats, error: 'chord' });
-      errors.push(`"${chord}"은 아직 지원하지 않는 코드예요. 지원 코드 목록을 확인해 주세요.`);
+      errors.push(`"${chord}" 코드는 아직 쓸 수 없어요. 아래 목록에서 비슷한 코드를 골라 주세요.`);
       continue;
     }
     if (beats < 1 || beats > 8) {
       items.push({ raw, chord, beats, error: 'beats' });
-      errors.push(`"${raw}"의 박자 수는 1에서 8 사이로 입력해 주세요.`);
+      errors.push(`"${raw}"의 박자 수를 1에서 8 사이로 바꿔 주세요.`);
       continue;
     }
     items.push({ raw, chord, beats, error: null });
@@ -69,10 +69,10 @@ export function validateConfig(cfg) {
   const bpm = Number(bpmText);
   const bpmError =
     !/^\d+$/.test(bpmText) || bpm < BPM_MIN || bpm > BPM_MAX
-      ? `BPM은 ${BPM_MIN}에서 ${BPM_MAX} 사이로 입력해 주세요.`
+      ? `빠르기는 ${BPM_MIN}에서 ${BPM_MAX} 사이 숫자로 입력해 주세요.`
       : null;
   const titleError =
-    (cfg.title || '').length > TITLE_MAX ? `제목은 ${TITLE_MAX}자까지 입력할 수 있어요.` : null;
+    (cfg.title || '').length > TITLE_MAX ? `제목은 ${TITLE_MAX}자까지 쓸 수 있어요.` : null;
   const beatsPerBar = TIME_SIGNATURES[cfg.ts];
 
   return {

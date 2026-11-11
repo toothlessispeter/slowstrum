@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { CHORD_GROUPS, PRESETS } from '../chords.js';
 import { TIME_SIGNATURES, TITLE_MAX, configToQuery, effectiveBpm } from '../config.js';
-import { STEPS, pad } from '../steps.js';
+import { STEPS } from '../steps.js';
 import ChordDiagram from './ChordDiagram.jsx';
 
 function StepHeader({ index, title, lead }) {
   return (
     <header className="step-head">
       <p className="caption">
-        {pad(index + 1)} / {pad(STEPS.length)} — {STEPS[index].ko}
+        {index + 1}/{STEPS.length}단계 · {STEPS[index].ko}
       </p>
       <h1 className="display-lg">{title}</h1>
       {lead && <p className="lead">{lead}</p>}
@@ -16,32 +16,35 @@ function StepHeader({ index, title, lead }) {
   );
 }
 
+function validChords(validation) {
+  return validation.items.filter((i) => !i.error);
+}
 function usedChords(validation) {
-  return [...new Set(validation.items.filter((i) => !i.error).map((i) => i.chord))];
+  return [...new Set(validChords(validation).map((i) => i.chord))];
 }
-
 function totalBeats(validation) {
-  return validation.items.filter((i) => !i.error).reduce((s, i) => s + i.beats, 0);
+  return validChords(validation).reduce((s, i) => s + i.beats, 0);
 }
 
-/* ---------------- 01 SONG ---------------- */
+/* ---------------- 1단계 · 곡 ---------------- */
 export function SongStep({ cfg, setCfg, validation, linkError }) {
+  const title = cfg.title.trim();
   return (
     <main className="page step-page">
       {linkError && (
         <p className="notice" role="alert">
-          링크 정보를 읽을 수 없어요. 선생님께 링크를 다시 받아 주세요.
+          링크를 열 수 없어요. 선생님께 링크를 다시 보내 달라고 해 주세요.
         </p>
       )}
       <StepHeader
         index={0}
-        title="What are we playing?"
-        lead="이번 주에 연습할 곡의 제목을 적어 주세요. 카포 위치나 예배 날짜를 같이 적으면 학생에게 메모로 전달돼요."
+        title="어떤 곡을 연습할까요?"
+        lead="연습 화면 맨 위에 보일 제목이에요. 카포 위치나 예배 날짜를 같이 적으면 학생도 바로 알 수 있어요."
       />
 
       <section className="panel">
-        <label className="field-label caption" htmlFor="title">
-          곡 제목 · 메모 (선택)
+        <label className="field-label" htmlFor="title">
+          곡 제목
         </label>
         <input
           id="title"
@@ -49,27 +52,24 @@ export function SongStep({ cfg, setCfg, validation, linkError }) {
           value={cfg.title}
           onChange={(e) => setCfg((c) => ({ ...c, title: e.target.value }))}
           maxLength={TITLE_MAX}
-          placeholder="11/9 예배 2번 곡 · 카포 2"
+          placeholder="예) 11/9 예배 2번 곡, 카포 2"
           autoComplete="off"
         />
         <p className="hint">
-          {cfg.title.length}/{TITLE_MAX}
+          안 적어도 괜찮아요 · {cfg.title.length}/{TITLE_MAX}자
         </p>
         {validation.titleError && <p className="error">{validation.titleError}</p>}
       </section>
 
-      <section className="wire-note">
-        <p className="caption">이 페이지에서 정하는 것</p>
-        <ul>
-          <li>연습 화면 맨 위에 보일 제목</li>
-          <li>비워 두면 &ldquo;제목 없음&rdquo;으로 표시</li>
-        </ul>
+      <section className="preview-card">
+        <p className="caption">학생 화면에는 이렇게 보여요</p>
+        <p className={`preview-title ${title ? '' : 'empty'}`}>{title || '제목 없음'}</p>
       </section>
     </main>
   );
 }
 
-/* ---------------- 02 CHORDS ---------------- */
+/* ---------------- 2단계 · 코드 ---------------- */
 export function ChordsStep({ cfg, setCfg, validation }) {
   const normalized = cfg.progression.trim().split(/\s+/).join(' ');
   const chords = usedChords(validation);
@@ -78,12 +78,12 @@ export function ChordsStep({ cfg, setCfg, validation }) {
     <main className="page step-page">
       <StepHeader
         index={1}
-        title="Chord progression"
-        lead="프리셋을 고르거나 직접 입력하세요. 형식은 코드:박자 수, 코드 사이는 공백이에요."
+        title="어떤 코드로 연습할까요?"
+        lead="자주 쓰는 진행을 고르거나 직접 입력해 주세요."
       />
 
       <section className="panel">
-        <p className="field-label caption">프리셋 — 찬양에 자주 쓰는 키</p>
+        <p className="field-label">자주 쓰는 진행</p>
         <div className="presets">
           {PRESETS.map((p) => (
             <button
@@ -92,7 +92,7 @@ export function ChordsStep({ cfg, setCfg, validation }) {
               className={`preset ${normalized === p.progression ? 'selected' : ''}`}
               onClick={() => setCfg((c) => ({ ...c, progression: p.progression }))}
             >
-              <span className="caption">{p.name}</span>
+              <span className="preset-name">{p.name}</span>
               <span className="preset-prog">{p.progression}</span>
             </button>
           ))}
@@ -100,26 +100,30 @@ export function ChordsStep({ cfg, setCfg, validation }) {
       </section>
 
       <section className="panel">
-        <label className="field-label caption" htmlFor="prog">
-          직접 입력
+        <label className="field-label" htmlFor="prog">
+          직접 입력하기
         </label>
+        <p className="field-help">
+          코드 이름 뒤에 :와 박자 수를 붙이고, 코드 사이는 띄어 써 주세요. G:4는 G 코드를 4박자
+          동안 친다는 뜻이에요.
+        </p>
         <textarea
           id="prog"
           className="input mono-input"
-          rows={3}
+          rows={2}
           value={cfg.progression}
           onChange={(e) => setCfg((c) => ({ ...c, progression: e.target.value }))}
-          placeholder="G:4 D/F#:4 Em:4 C:4"
+          placeholder="G:4 D:4 Em:4 C:4"
           spellCheck={false}
           autoCapitalize="off"
           autoCorrect="off"
         />
 
         {validation.items.length > 0 && (
-          <div className="chips" aria-label="코드 미리보기">
+          <div className="chips" aria-label="입력한 코드">
             {validation.items.map((item, i) => (
               <span key={i} className={`chip ${item.error ? 'err' : ''}`}>
-                {item.error === 'format' ? item.raw : `${item.chord} · ${item.beats}`}
+                {item.error === 'format' ? item.raw : `${item.chord} ${item.beats}박자`}
               </span>
             ))}
           </div>
@@ -134,8 +138,9 @@ export function ChordsStep({ cfg, setCfg, validation }) {
 
       {chords.length > 0 && (
         <section className="panel">
-          <p className="field-label caption">
-            쓰인 코드 {chords.length}개 · 총 {totalBeats(validation)}박자
+          <p className="field-label">운지 미리보기</p>
+          <p className="field-help">
+            코드 {chords.length}개, 모두 {totalBeats(validation)}박자예요.
           </p>
           <div className="diagram-list">
             {chords.map((name) => (
@@ -149,12 +154,12 @@ export function ChordsStep({ cfg, setCfg, validation }) {
       )}
 
       <details className="supported">
-        <summary className="caption">지원 코드 26개 보기</summary>
+        <summary>쓸 수 있는 코드 26개 보기</summary>
         <div className="supported-groups">
           {CHORD_GROUPS.map((g) => (
             <p key={g.name}>
-              <span className="caption">{g.name}</span>
-              <span className="mono-list">{g.chords.join('  ')}</span>
+              <span className="supported-name">{g.name}</span>
+              <span className="mono-list">{g.chords.join('   ')}</span>
             </p>
           ))}
         </div>
@@ -163,9 +168,9 @@ export function ChordsStep({ cfg, setCfg, validation }) {
   );
 }
 
-/* ---------------- 03 TEMPO ---------------- */
-export function TempoStep({ cfg, setCfg, validation }) {
-  const chords = validation.items.filter((i) => !i.error);
+/* ---------------- 3단계 · 빠르기 ---------------- */
+export function TempoStep({ cfg, setCfg, validation, onEdit }) {
+  const chords = validChords(validation);
   const beats = totalBeats(validation);
   const measures = Math.ceil(beats / validation.beatsPerBar);
 
@@ -173,14 +178,14 @@ export function TempoStep({ cfg, setCfg, validation }) {
     <main className="page step-page">
       <StepHeader
         index={2}
-        title="Tempo & time"
-        lead="원곡 BPM과 박자표를 정해요. 연습 속도는 다음 페이지에서 %로 낮출 수 있어요."
+        title="원곡은 얼마나 빠른가요?"
+        lead="원곡 빠르기와 박자를 알려 주세요. 연습할 때는 다음 화면에서 더 느리게 바꿀 수 있어요."
       />
 
       <section className="panel tempo-panel">
         <div>
-          <label className="field-label caption" htmlFor="bpm">
-            원곡 BPM (40~200)
+          <label className="field-label" htmlFor="bpm">
+            원곡 빠르기
           </label>
           <div className="bpm-field">
             <input
@@ -192,12 +197,13 @@ export function TempoStep({ cfg, setCfg, validation }) {
             />
             <span className="unit">BPM</span>
           </div>
+          <p className="hint">잘 모르면 72로 두고 연습하면서 맞춰도 괜찮아요</p>
           {validation.bpmError && <p className="error">{validation.bpmError}</p>}
         </div>
 
         <div>
-          <p className="field-label caption">박자표</p>
-          <div className="toggles" role="radiogroup" aria-label="박자표">
+          <p className="field-label">박자</p>
+          <div className="toggles" role="radiogroup" aria-label="박자">
             {Object.keys(TIME_SIGNATURES).map((ts) => (
               <button
                 type="button"
@@ -211,24 +217,31 @@ export function TempoStep({ cfg, setCfg, validation }) {
               </button>
             ))}
           </div>
+          <p className="hint">찬양곡은 대부분 4/4예요</p>
         </div>
       </section>
 
       <section className="summary">
-        <p className="caption">지금까지 입력한 내용</p>
+        <p className="field-label">입력한 내용을 확인해 주세요</p>
         <dl>
           <div>
-            <dt className="caption">Title</dt>
+            <dt>제목</dt>
             <dd>{cfg.title.trim() || '제목 없음'}</dd>
+            <button type="button" className="text-btn" onClick={() => onEdit(0)}>
+              고치기
+            </button>
           </div>
           <div>
-            <dt className="caption">Chords</dt>
+            <dt>코드</dt>
             <dd className="mono-list">{chords.map((c) => c.chord).join('  ')}</dd>
+            <button type="button" className="text-btn" onClick={() => onEdit(1)}>
+              고치기
+            </button>
           </div>
           <div>
-            <dt className="caption">Length</dt>
+            <dt>길이</dt>
             <dd>
-              {beats}박자 · {measures}마디
+              {measures}마디, {beats}박자
             </dd>
           </div>
         </dl>
@@ -237,7 +250,7 @@ export function TempoStep({ cfg, setCfg, validation }) {
   );
 }
 
-/* ---------------- 05 SHARE ---------------- */
+/* ---------------- 5단계 · 공유 ---------------- */
 export function ShareStep({ cfg, validation }) {
   const [copy, setCopy] = useState(null);
   const timer = useRef(null);
@@ -251,7 +264,7 @@ export function ShareStep({ cfg, validation }) {
     try {
       await navigator.clipboard.writeText(url);
       setCopy('ok');
-      timer.current = setTimeout(() => setCopy(null), 2000);
+      timer.current = setTimeout(() => setCopy(null), 2500);
     } catch {
       setCopy('fail');
     }
@@ -261,29 +274,29 @@ export function ShareStep({ cfg, validation }) {
     <main className="page step-page">
       <StepHeader
         index={4}
-        title="Send to your student"
-        lead="링크를 복사해서 카카오톡에 붙여넣으세요. 학생은 로그인 없이 링크를 열면 연습 화면에서 바로 시작해요."
+        title="학생에게 링크를 보내 주세요"
+        lead="링크를 복사해서 카카오톡에 붙여 넣으면 돼요. 학생은 로그인 없이 링크를 열면 바로 연습 화면을 볼 수 있어요."
       />
 
       <section className="summary">
-        <p className="caption">링크에 담기는 설정</p>
+        <p className="field-label">링크에 담기는 내용</p>
         <dl>
           <div>
-            <dt className="caption">Title</dt>
+            <dt>제목</dt>
             <dd>{cfg.title.trim() || '제목 없음'}</dd>
           </div>
           <div>
-            <dt className="caption">Progression</dt>
+            <dt>코드</dt>
             <dd className="mono-list">{cfg.progression.trim().split(/\s+/).join('  ')}</dd>
           </div>
           <div>
-            <dt className="caption">Tempo</dt>
+            <dt>원곡 빠르기</dt>
             <dd>
-              원곡 {validation.bpm} BPM · {cfg.ts}
+              {validation.bpm} BPM · {cfg.ts}박자
             </dd>
           </div>
           <div>
-            <dt className="caption">Speed</dt>
+            <dt>연습 빠르기</dt>
             <dd>
               {eff.value} BPM (원곡의 {cfg.speed}%)
             </dd>
@@ -292,7 +305,7 @@ export function ShareStep({ cfg, validation }) {
       </section>
 
       <section className="panel">
-        <label className="field-label caption" htmlFor="share-url">
+        <label className="field-label" htmlFor="share-url">
           공유 링크
         </label>
         <input
@@ -304,12 +317,12 @@ export function ShareStep({ cfg, validation }) {
         />
         <div className="share-actions">
           <button type="button" className="btn primary" onClick={copyLink}>
-            Copy link
+            링크 복사하기
           </button>
         </div>
-        {copy === 'ok' && <p className="success">링크를 복사했어요. 카카오톡에 붙여넣어 보내세요.</p>}
+        {copy === 'ok' && <p className="success">링크를 복사했어요. 카카오톡 대화방에 붙여 넣어 주세요.</p>}
         {copy === 'fail' && (
-          <p className="error">자동 복사가 안 됐어요. 위 링크를 길게 눌러 복사해 주세요.</p>
+          <p className="error">자동 복사가 안 됐어요. 위 링크를 길게 눌러서 복사해 주세요.</p>
         )}
       </section>
     </main>
